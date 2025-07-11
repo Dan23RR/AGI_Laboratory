@@ -11,7 +11,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)](tests/)
 [![Documentation](https://img.shields.io/badge/Docs-Available-orange.svg)](docs/)
-[![Discord](https://img.shields.io/badge/Discord-Join%20Us-7289DA.svg)](https://discord.gg/agi-lab)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Us-7289DA.svg)](https://discord.gg/vCbefGjhES)
 
 </div>
 
@@ -174,7 +174,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## 💬 **Community**
 
-- **Discord**: [Join our server](https://discord.gg/agi-lab) for real-time discussions
+- **Discord**: [Join our server](https://discord.gg/vCbefGjhES) for real-time discussions
 - **Twitter**: [@AGILaboratory](https://twitter.com/AGILaboratory) for updates
 - **Blog**: [Read our research notes](https://medium.com/@agi-laboratory)
 
