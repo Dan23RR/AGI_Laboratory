@@ -11,8 +11,8 @@ import glob
 import os
 from datetime import datetime
 
-from extended_genome import ExtendedGenome
-from mind_factory_v2 import MindFactoryV2, MindConfig
+from evolution.extended_genome import ExtendedGenome
+from evolution.mind_factory_v2 import MindFactoryV2, MindConfig
 
 def find_best_genome():
     """Find the best genome from all checkpoints"""

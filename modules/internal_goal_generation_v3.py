@@ -21,8 +21,8 @@ from collections import deque
 import uuid
 import math
 
-from .base_module import BaseAGIModule, ModuleConfig, CircularBuffer
-from .error_handling import RobustForward, handle_errors
+from core.base_module import BaseAGIModule, ModuleConfig, CircularBuffer
+from core.error_handling import RobustForward, handle_errors
 
 
 @dataclass

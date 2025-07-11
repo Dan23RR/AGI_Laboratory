@@ -1084,9 +1084,6 @@ class RedTeamAGI:
             # ... more mappings
         }
         return mitre_mapping.get(phase, [])
-'''
-    
-    return tools_code
 
 # Main execution
 if __name__ == "__main__":

@@ -14,10 +14,10 @@ import os
 import numpy as np
 
 # Core imports
-from general_evolution_lab_v3 import GeneralEvolutionLabV3
+from evolution.general_evolution_lab_v3 import GeneralEvolutionLabV3
 from core.meta_evolution import MetaEvolution, MetaEvolutionConfig
-from extended_genome import ExtendedGenome
-from mind_factory_v2 import MindFactoryV2, MindConfig
+from evolution.extended_genome import ExtendedGenome
+from evolution.mind_factory_v2 import MindFactoryV2, MindConfig
 
 # Setup logging
 logging.basicConfig(

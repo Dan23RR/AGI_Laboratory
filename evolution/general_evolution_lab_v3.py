@@ -30,14 +30,19 @@ from core import (
 )
 
 # Import meta-evolution
+import sys
+import os
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from core.meta_evolution import MetaEvolution, MetaEvolutionConfig
 
 # Import AGI components  
-from extended_genome import ExtendedGenome
-from mind_factory_v2 import MindFactoryV2 as ExtendedMindFactoryV2
-from agi_fitness_metrics_v2 import AGIFitnessEvaluator, AGIFitnessScore
+from evolution.extended_genome import ExtendedGenome
+from evolution.mind_factory_v2 import MindFactoryV2 as ExtendedMindFactoryV2
+from evolution.fitness.agi_fitness_metrics_v2 import AGIFitnessEvaluator, AGIFitnessScore
 from environments.general_environments import EnvironmentSuite, MetaEnvironment
-from config_v2 import *
+# from config_v2 import *  # Config file not found, using defaults below
 
 logger = logging.getLogger(__name__)
 

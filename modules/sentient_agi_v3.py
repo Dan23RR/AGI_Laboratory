@@ -18,8 +18,8 @@ import numpy as np
 from typing import Dict, List, Optional, Tuple, Any, Union
 import math
 
-from .base_module import BaseAGIModule, CircularBuffer, ModuleConfig
-from .error_handling import RobustForward, handle_errors
+from core.base_module import BaseAGIModule, CircularBuffer, ModuleConfig
+from core.error_handling import RobustForward, handle_errors
 from .conscious_integration_hub_v2 import ConsciousIntegrationHubV2
 from .emergent_consciousness_v4 import EmergentConsciousnessV4
 from .goal_conditioned_mcts_v3 import GoalConditionedMCTSV3
@@ -169,7 +169,7 @@ class SentientAGIV3(BaseAGIModule):
         
         # Create MCTS with proper config
         from .goal_conditioned_mcts_v3 import MCTSConfigV3
-        from .base_module import ModuleConfig
+        from core.base_module import ModuleConfig
         mcts_config = MCTSConfigV3(
             action_dim=self.hidden_dim,
             state_dim=self.hidden_dim,

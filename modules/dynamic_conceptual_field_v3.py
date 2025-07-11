@@ -18,8 +18,8 @@ import numpy as np
 from typing import Dict, List, Tuple, Optional, Any, Union
 import math
 
-from .base_module import BaseAGIModule, CircularBuffer, ModuleConfig
-from .error_handling import RobustForward, handle_errors
+from core.base_module import BaseAGIModule, CircularBuffer, ModuleConfig
+from core.error_handling import RobustForward, handle_errors
 
 
 class BoundedFieldKernel(nn.Module):
