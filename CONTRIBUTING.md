@@ -326,6 +326,7 @@ Contributors will be:
 - **Discord**: [Join our server](https://discord.gg/vCbefGjhES)
 - **GitHub Issues**: For questions and discussions
 - **GitHub Discussions**: Coming soon
+- **Email**: agilaboratory2025@gmail.com
 
 ---
 

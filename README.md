@@ -288,7 +288,7 @@ We're offering rewards for key contributions:
 - Technical support and consulting
 - Influence roadmap direction
 
-Contact: partnerships@agilaboratory.org (coming soon)
+Contact: agilaboratory2025@gmail.com
 </details>
 
 ### Areas We Need Help
