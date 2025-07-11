@@ -306,7 +306,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## 💬 **Community**
 
 - **Discord**: [Join our server](https://discord.gg/vCbefGjhES) for real-time discussions
-- **Twitter**: Coming soon
+- **Twitter**: [@AGI_Laboratory](https://twitter.com/AGI_Laboratory)
 - **Blog**: Coming soon
 
 ---
