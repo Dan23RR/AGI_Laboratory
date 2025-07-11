@@ -21,11 +21,7 @@
 
 **AGI Laboratory** is a PyTorch framework for evolving not a single AGI, but an entire **society of specialized artificial intelligences**. Inspired by biological evolution, our hierarchical approach starts from a primordial genome to create domain experts in fields like finance, cybersecurity, and scientific research.
 
-<div align="center">
-  <img src="docs/images/evolution_hierarchy.png" alt="AGI Evolution Hierarchy" width="800"/>
-  <br>
-  <em>From a single genome to a society of specialized AGIs</em>
-</div>
+<!-- Image placeholder - add evolution_hierarchy.png to docs/images/ when available -->
 
 ---
 
@@ -64,21 +60,26 @@ agi-laboratory/
 │   └── error_handling.py       # Robust error recovery
 │
 ├── 🧩 modules/                 # Cognitive building blocks (V3/V4)
-│   ├── consciousness/          # EmergentConsciousnessV3, etc.
-│   ├── reasoning/              # CounterfactualReasonerV3, etc.
-│   └── perception/             # PatternRecognitionV3, etc.
+│   ├── emergent_consciousness_v4.py
+│   ├── counterfactual_reasoner_v3.py
+│   └── attractor_networks_v3.py
 │
-├── 🧪 labs/                    # Evolution engines
+├── 🧪 evolution/               # Evolution engines
 │   ├── general_evolution_lab_v3.py
-│   ├── meta_evolution.py
-│   └── fitness_functions/
+│   ├── mind_factory_v2.py
+│   └── fitness/
 │
 ├── 📐 blueprints/              # Division architectures
-│   ├── trading_division.py
-│   ├── security_division.py
-│   └── research_division.py
+│   ├── trading_division_architecture.py
+│   ├── security_division_architecture.py
+│   └── ethical_hacking_division.py
 │
-└── 🚀 examples/                # Quick start demos
+├── 🚀 scripts/                 # Utility scripts
+│   ├── analyze_modules.py
+│   ├── monitor_evolution.py
+│   └── test_best_genome.py
+│
+└── 🧪 tests/                   # Test suite
 ```
 
 ---
@@ -96,24 +97,24 @@ cd AGI_Laboratory
 pip install -r requirements.txt
 
 # Run tests to verify installation
-python test_full_integration.py
+python tests/test_full_integration.py
 ```
 
 ### Your First Evolution
 
 ```python
 # Launch a simple evolution experiment
-python launch_agi_clean.py --generations 10 --population 50 --device cpu
+python launch_agi_lab.py --generations 10 --population 50 --device cpu
 
 # Monitor progress
-python monitor_evolution.py
+python scripts/monitor_evolution.py
 ```
 
 ### Create Your First Specialist
 
 ```python
-from general_evolution_lab_v3 import GeneralEvolutionLabV3
-from fitness_functions import vulnerability_detection_fitness
+from evolution.general_evolution_lab_v3 import GeneralEvolutionLabV3
+from evolution.fitness.agi_fitness_metrics_v2 import vulnerability_detection_fitness
 
 # Load the base genome
 lab = GeneralEvolutionLabV3()
@@ -175,8 +176,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## 💬 **Community**
 
 - **Discord**: [Join our server](https://discord.gg/vCbefGjhES) for real-time discussions
-- **Twitter**: [@AGILaboratory](https://twitter.com/AGILaboratory) for updates
-- **Blog**: [Read our research notes](https://medium.com/@agi-laboratory)
+- **Twitter**: Coming soon
+- **Blog**: Coming soon
 
 ---
 
