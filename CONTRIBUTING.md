@@ -27,19 +27,19 @@ This project and everyone participating in it is governed by our Code of Conduct
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/your-username/agi-laboratory.git
-   cd agi-laboratory
+   git clone https://github.com/your-username/AGI_Laboratory.git
+   cd AGI_Laboratory
    ```
 3. **Create a virtual environment**:
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements-dev.txt
+   pip install -r requirements.txt
    ```
 4. **Run the tests** to ensure everything is working:
    ```bash
    python -m pytest tests/
-   python test_full_integration.py
+   python tests/test_full_integration.py
    ```
 
 ## 💡 How Can I Contribute?
@@ -116,7 +116,7 @@ git checkout -b fix/bug-description
 python -m pytest tests/
 
 # Run integration tests
-python test_full_integration.py
+python tests/test_full_integration.py
 
 # Check code style
 black --check .
@@ -323,9 +323,9 @@ Contributors will be:
 
 ## ❓ Questions?
 
-- **Discord**: [Join our server](https://discord.gg/agi-lab)
-- **Discussions**: Use GitHub Discussions for questions
-- **Email**: agi-laboratory@example.com
+- **Discord**: [Join our server](https://discord.gg/vCbefGjhES)
+- **GitHub Issues**: For questions and discussions
+- **GitHub Discussions**: Coming soon
 
 ---
 
