@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Jupyter
+.ipynb_checkpoints
+*.ipynb
+
+# Model checkpoints and data
+checkpoints*/
+*.pt
+*.pth
+*.pkl
+*.h5
+*.ckpt
+
+# Logs
+*.log
+logs/
+runs/
+wandb/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+evolution_log_*.log
+agi_errors.log
+test_results_*.txt
+module_analysis_*.txt
+lab_catalog_detailed.txt
+trading_division_detailed.json
+personal_guardian.py
+mobile_security.py
+ethical_hacking_agi.py
+hacking_tools_agi.py
+hypothesis_engine.py
+experiment_automation.py
+
+# Temporary files
+*.tmp
+*.temp
+/tmp/
+
+# Environment variables
+.env
+.env.local
+
+# Documentation build
+docs/_build/
+docs/api/generated/
