@@ -89,8 +89,8 @@ agi-laboratory/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/agi-laboratory.git
-cd agi-laboratory
+git clone https://github.com/Dan23RR/AGI_Laboratory.git
+cd AGI_Laboratory
 
 # Install dependencies
 pip install -r requirements.txt
@@ -196,9 +196,9 @@ If you use AGI Laboratory in your research, please cite:
 ```bibtex
 @software{agi-laboratory,
   title = {AGI Laboratory: A Framework for Hierarchical Evolution of Artificial General Intelligence},
-  author = {Your Name},
+  author = {Daniel Culotta},
   year = {2024},
-  url = {https://github.com/yourusername/agi-laboratory}
+  url = {https://github.com/Dan23RR/AGI_Laboratory}
 }
 ```
 
