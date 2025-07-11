@@ -189,15 +189,36 @@ python scripts/monitor_evolution.py
 
 ```python
 from evolution.general_evolution_lab_v3 import GeneralEvolutionLabV3
-from evolution.fitness.agi_fitness_metrics_v2 import vulnerability_detection_fitness
+from evolution.fitness.agi_fitness_metrics_v2 import AGIFitnessEvaluator
+import torch.nn as nn
 
-# Load the base genome
-lab = GeneralEvolutionLabV3()
+# Initialize the lab
+lab = GeneralEvolutionLabV3(
+    population_size=50,
+    mutation_rate=0.1,
+    device='cpu'
+)
 
-# Evolve a security specialist
-security_genome = lab.evolve(
-    fitness_function=vulnerability_detection_fitness,
-    generations=100
+# Create a fitness evaluator
+evaluator = AGIFitnessEvaluator()
+
+# Define a custom fitness function
+def my_fitness_function(genome):
+    # Create a simple model from genome for testing
+    model = nn.Sequential(
+        nn.Linear(128, 256),
+        nn.ReLU(),
+        nn.Linear(256, 128)
+    )
+    
+    # Evaluate using AGI metrics
+    fitness_score = evaluator.evaluate_complete(model)
+    return fitness_score.generalization + fitness_score.reasoning
+
+# Run evolution
+best_genome = lab.evolve(
+    fitness_fn=my_fitness_function,
+    n_generations=10
 )
 ```
 
