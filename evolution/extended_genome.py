@@ -16,10 +16,32 @@ from typing import Dict, List, Tuple, Any, Optional
 from copy import deepcopy
 import numpy as np
 
+# Setup import path
+import sys
+import os
+current_file = os.path.abspath(__file__)
+current_dir = os.path.dirname(current_file)
+parent_dir = os.path.dirname(current_dir)
+
+# Add parent directory to Python path
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
 try:
     from config_v2 import GENE_HYPERPARAMETER_RANGES
 except ImportError:
-    from config import GENE_HYPERPARAMETER_RANGES
+    try:
+        from config import GENE_HYPERPARAMETER_RANGES
+    except ImportError:
+        # Define default ranges if config not found
+        GENE_HYPERPARAMETER_RANGES = {
+            'mutation_rate': (0.001, 0.5),
+            'crossover_rate': (0.1, 0.9),
+            'learning_rate': (0.0001, 0.1),
+            'hidden_dim': (64, 1024),
+            'num_layers': (1, 10),
+            'dropout_rate': (0.0, 0.5)
+        }
 
 
 class ExtendedGenome:

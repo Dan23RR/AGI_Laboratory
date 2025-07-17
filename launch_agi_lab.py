@@ -14,10 +14,11 @@ import os
 import numpy as np
 
 # Core imports
-from general_evolution_lab_v3 import GeneralEvolutionLabV3
+from evolution.general_evolution_lab_v3 import GeneralEvolutionLabV3
 from core.meta_evolution import MetaEvolution, MetaEvolutionConfig
-from extended_genome import ExtendedGenome
-from mind_factory_v2 import MindFactoryV2, MindConfig
+from evolution.extended_genome import ExtendedGenome
+from evolution.mind_factory_v2 import MindFactoryV2, MindConfig
+from evolution.fitness.agi_fitness_metrics_v2 import AGIFitnessEvaluator
 
 # Setup logging
 logging.basicConfig(
@@ -35,12 +36,13 @@ logger = logging.getLogger(__name__)
 def create_fitness_function(target_task="general"):
     """Create fitness function based on target task"""
     
-    def general_fitness(genome: ExtendedGenome) -> float:
-        """General AGI fitness: balance of capabilities"""
+    evaluator = AGIFitnessEvaluator() # Instantiate evaluator once
+
+    def agi_overall_fitness(genome: ExtendedGenome) -> float:
+        """Comprehensive AGI fitness using AGIFitnessEvaluator"""
         factory = MindFactoryV2()
         
         try:
-            # Create mind from genome
             mind_config = MindConfig(
                 hidden_dim=512,
                 output_dim=256,
@@ -48,82 +50,45 @@ def create_fitness_function(target_task="general"):
             )
             mind = factory.create_mind_from_genome(genome.to_dict(), mind_config)
             
-            # Test on various tasks
-            fitness_scores = []
+            if mind is None:
+                logger.warning("Mind creation failed, returning 0.0 fitness.")
+                return 0.0
+
+            # Evaluate complete AGI fitness
+            agi_score_obj = evaluator.evaluate_complete(mind)
+            overall_score = agi_score_obj.overall_agi_score()
+
+            # Add bonus for FeedbackLoopSystemV3
+            bonus = 0.0
+            if genome.genes.get("FeedbackLoopSystemV3", False):
+                bonus += 0.1 # Small bonus for activating this key module
+
+            # Add bonus for other key modules if desired
+            if genome.genes.get("EmpowermentCalculatorV3", False):
+                bonus += 0.05
+            if genome.genes.get("EmergentConsciousnessV4", False):
+                bonus += 0.05
+
+            final_fitness = overall_score + bonus
             
-            # 1. Pattern recognition
-            test_input = torch.randn(8, 512)
-            output = mind(test_input)
-            pattern_score = 1.0 - output['output'].std().item()  # Consistency
-            fitness_scores.append(pattern_score)
-            
-            # 2. Coherence over time
-            coherence_scores = []
-            for _ in range(5):
-                output = mind(torch.randn(4, 512))
-                if 'coherence_score' in output:
-                    coherence_scores.append(output['coherence_score'].item())
-            
-            if coherence_scores:
-                fitness_scores.append(sum(coherence_scores) / len(coherence_scores))
-            
-            # 3. Memory efficiency
-            if hasattr(mind, 'get_memory_usage'):
-                memory = mind.get_memory_usage()
-                memory_score = 1.0 / (1.0 + memory['total_mb'] / 100)  # Lower memory is better
-                fitness_scores.append(memory_score)
-            
-            # 4. Module diversity bonus
-            active_modules = sum(1 for v in genome.genes.values() if v)
-            diversity_score = min(active_modules / 10, 1.0)  # Up to 10 modules
-            fitness_scores.append(diversity_score * 0.5)  # Weight 0.5
-            
-            # Cleanup
+            # Ensure fitness is within a reasonable range (e.g., 0 to 1.5)
+            final_fitness = max(0.0, min(1.5, final_fitness))
+
             mind.cleanup()
-            
-            # Combine scores
-            return sum(fitness_scores) / len(fitness_scores)
+            return final_fitness
             
         except Exception as e:
-            logger.error(f"Error evaluating genome: {e}")
+            logger.error(f"Error evaluating genome with AGIFitnessEvaluator: {e}")
+            import traceback
+            traceback.print_exc()
             return 0.0
         finally:
             factory.cleanup()
     
-    def trading_fitness(genome: ExtendedGenome) -> float:
-        """Trading-specific fitness"""
-        # Ensure required modules
-        required = ["EmpowermentCalculator", "CounterfactualReasoner", "InternalGoalGeneration"]
-        for module in required:
-            if not genome.genes.get(module, False):
-                return 0.1  # Low fitness if missing required modules
-        
-        # Use general fitness as base
-        base_fitness = general_fitness(genome)
-        
-        # Add trading-specific bonuses
-        if genome.genes.get("EmpowermentCalculator", False):
-            base_fitness += 0.2
-        if genome.genes.get("CounterfactualReasoner", False):
-            base_fitness += 0.2
-            
-        return min(base_fitness, 1.0)
-    
-    def research_fitness(genome: ExtendedGenome) -> float:
-        """Research/creativity fitness"""
-        # Favor emergent properties
-        required = ["EmergentConsciousness", "DynamicConceptualField", "ConceptualCompressor"]
-        bonus = sum(0.15 for module in required if genome.genes.get(module, False))
-        
-        return min(general_fitness(genome) + bonus, 1.0)
-    
-    # Return appropriate fitness function
-    if target_task == "trading":
-        return trading_fitness
-    elif target_task == "research":
-        return research_fitness
-    else:
-        return general_fitness
+    # For now, all tasks will use the comprehensive AGI fitness
+    # In the future, specific task fitness functions could be implemented
+    # by weighting different components of AGIFitnessScore.
+    return agi_overall_fitness
 
 
 def main():

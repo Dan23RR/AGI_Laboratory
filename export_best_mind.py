@@ -12,8 +12,8 @@ import os
 import json
 from datetime import datetime
 
-from extended_genome import ExtendedGenome
-from mind_factory_v2 import MindFactoryV2, MindConfig
+from evolution.extended_genome import ExtendedGenome
+from evolution.mind_factory_v2 import MindFactoryV2, MindConfig
 
 def find_best_genome():
     """Find the best genome from all checkpoints"""
@@ -40,7 +40,7 @@ def find_best_genome():
     
     return best_genome, best_fitness, best_file
 
-def create_standalone_mind_class(genome_dict, output_file):
+def create_standalone_mind_class(genome_dict, output_file, best_fitness):
     """Generate a standalone Python class for the mind"""
     
     # Extract active modules
@@ -67,10 +67,9 @@ class EvolvedMind(nn.Module):
         super().__init__()
         self.hidden_dim = hidden_dim
         self.output_dim = output_dim
-        
+        self.evolution_fitness = {fitness:.4f}
         # Active modules from evolution
         self.active_modules = {active_modules}
-        
         # Core components (simplified)
         self.input_projection = nn.Linear(hidden_dim, hidden_dim)
         self.core_processor = nn.TransformerEncoder(
@@ -84,14 +83,12 @@ class EvolvedMind(nn.Module):
             num_layers=3
         )
         self.output_projection = nn.Linear(hidden_dim, output_dim)
-        
         # Module-specific components
         self._init_evolved_modules()
-        
         # Memory buffer
         self.memory_buffer = None
         self.memory_size = 100
-        
+    
     def _init_evolved_modules(self):
         """Initialize components based on evolved modules"""
         # Add specific components based on active modules
@@ -100,18 +97,15 @@ class EvolvedMind(nn.Module):
                 nn.Linear(self.hidden_dim, self.hidden_dim),
                 nn.Sigmoid()
             )
-        
         if "WorkingMemory" in self.active_modules:
             self.memory_attention = nn.MultiheadAttention(
                 self.hidden_dim, num_heads=8, batch_first=True
             )
-        
         if "EmergentConsciousness" in self.active_modules:
             self.emergence_layer = nn.GRU(
                 self.hidden_dim, self.hidden_dim, 
                 batch_first=True, bidirectional=True
             )
-        
         if "CounterfactualReasoner" in self.active_modules:
             self.reasoning_head = nn.Sequential(
                 nn.Linear(self.hidden_dim, self.hidden_dim * 2),
@@ -132,45 +126,35 @@ class EvolvedMind(nn.Module):
         # Handle different input shapes
         if x.dim() == 2:
             x = x.unsqueeze(1)  # Add sequence dimension
-        
         batch_size, seq_len, _ = x.shape
-        
         # Input processing
         x = self.input_projection(x)
-        
         # Apply consciousness gating if evolved
         if hasattr(self, 'consciousness_gate'):
             gate = self.consciousness_gate(x)
             x = x * gate
-        
         # Core processing
         processed = self.core_processor(x)
-        
         # Memory integration if evolved
         if hasattr(self, 'memory_attention') and self.memory_buffer is not None:
             attended, _ = self.memory_attention(
                 processed, self.memory_buffer, self.memory_buffer
             )
             processed = processed + attended * 0.5
-        
         # Emergence processing if evolved
         if hasattr(self, 'emergence_layer'):
             emerged, _ = self.emergence_layer(processed)
             # Combine bidirectional outputs
             emerged = emerged[:, :, :self.hidden_dim] + emerged[:, :, self.hidden_dim:]
             processed = processed + emerged * 0.3
-        
         # Reasoning if evolved
         if hasattr(self, 'reasoning_head'):
             reasoned = self.reasoning_head(processed)
             processed = processed + reasoned * 0.2
-        
         # Output projection
         output = self.output_projection(processed)
-        
         # Update memory
         self._update_memory(processed)
-        
         # Return results
         return {{
             'output': output.squeeze(1) if seq_len == 1 else output,
@@ -182,7 +166,6 @@ class EvolvedMind(nn.Module):
         """Update memory buffer with new states"""
         if "WorkingMemory" not in self.active_modules:
             return
-            
         # Initialize memory if needed
         if self.memory_buffer is None:
             self.memory_buffer = new_state.detach()
@@ -203,18 +186,16 @@ class EvolvedMind(nn.Module):
             'output_dim': self.output_dim,
             'active_modules': list(self.active_modules),
             'architecture': 'evolved_transformer',
-            'evolution_fitness': {fitness:.4f}
+            'evolution_fitness': self.evolution_fitness
         }}
 
 # Example usage
 if __name__ == "__main__":
     # Create mind instance
     mind = EvolvedMind()
-    
     # Test forward pass
     test_input = torch.randn(2, 512)  # batch=2, hidden_dim=512
     output = mind(test_input)
-    
     print("Mind configuration:", mind.get_config())
     print("Output shape:", output['output'].shape)
     print("Active modules:", len(mind.active_modules))
@@ -310,7 +291,7 @@ def main():
     # 2. Generate standalone Python class
     print("\n2️⃣ Generating standalone Python class...")
     py_file = os.path.join(export_dir, "evolved_mind.py")
-    modules = create_standalone_mind_class(genome_dict, py_file)
+    modules = create_standalone_mind_class(genome_dict, py_file, best_fitness)
     print(f"   ✅ Saved: {py_file}")
     
     # 3. Create usage example

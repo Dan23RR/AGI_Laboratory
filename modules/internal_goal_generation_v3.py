@@ -21,8 +21,8 @@ from collections import deque
 import uuid
 import math
 
-from .base_module import BaseAGIModule, ModuleConfig, CircularBuffer
-from .error_handling import RobustForward, handle_errors
+from core.base_module import BaseAGIModule, ModuleConfig, CircularBuffer
+from core.error_handling import RobustForward, handle_errors
 
 
 @dataclass
@@ -228,8 +228,7 @@ class InternalGoalGenerationV3(BaseAGIModule):
         
         # Increment time
         self.time_step += 1
-        current_time = self.time_step.item()
-        
+        current_time = self.time_step.detach().item()
         # Clean up expired goals
         self._cleanup_expired_goals(current_time)
         
@@ -294,7 +293,7 @@ class InternalGoalGenerationV3(BaseAGIModule):
             
             # Compute priority based on novelty
             novelty = self._compute_novelty(goal_embedding)
-            priority = torch.sigmoid(novelty).item()
+            priority = torch.sigmoid(novelty).detach().item()
             
             # Create goal
             goal = GoalV3(
@@ -320,7 +319,7 @@ class InternalGoalGenerationV3(BaseAGIModule):
         for goal_id, goal in list(self.active_goals.items()):
             # Compute achievement score
             combined = torch.cat([state[0], goal.embedding], dim=-1)
-            achievement_score = self.goal_evaluator(combined).item()
+            achievement_score = self.goal_evaluator(combined).detach().item()
             
             # Check if achieved
             if achievement_score > goal.achievement_threshold:

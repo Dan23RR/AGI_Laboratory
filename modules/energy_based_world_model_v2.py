@@ -18,9 +18,9 @@ from typing import Dict, List, Optional, Tuple, Any, Union
 import math
 from dataclasses import dataclass
 
-from .base_module import BaseAGIModule, ModuleConfig
-from .memory_manager import CircularBuffer
-from .error_handling import (
+from core.base_module import BaseAGIModule, ModuleConfig
+from core.memory_manager import CircularBuffer
+from core.error_handling import (
     handle_errors, validate_tensor, DimensionError,
     safe_normalize, RobustForward
 )

@@ -28,9 +28,9 @@ from datetime import datetime
 from dataclasses import dataclass
 
 # Import core components
-from mind_factory_v2 import MindFactoryV2, MindConfig
+from evolution.mind_factory_v2 import MindFactoryV2, MindConfig
 from core.meta_evolution import MetaEvolution, MetaEvolutionConfig
-from extended_genome import ExtendedGenome
+from evolution.extended_genome import ExtendedGenome
 from core.base_module import ModuleConfig
 
 # Create simplified EvolutionConfig since it's not in general_evolution_lab_v3

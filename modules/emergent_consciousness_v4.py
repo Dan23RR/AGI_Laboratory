@@ -20,9 +20,9 @@ from collections import OrderedDict
 import time
 import math
 
-from .base_module import BaseAGIModule, ModuleConfig
-from .memory_manager import CircularBuffer
-from .error_handling import (
+from core.base_module import BaseAGIModule, ModuleConfig
+from core.memory_manager import CircularBuffer
+from core.error_handling import (
     handle_errors, validate_tensor, DimensionError,
     safe_normalize, RobustForward
 )

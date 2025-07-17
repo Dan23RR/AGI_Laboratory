@@ -9,10 +9,17 @@ Load and test the best evolved genome on various tasks.
 import torch
 import glob
 import os
+import sys
 from datetime import datetime
 
-from extended_genome import ExtendedGenome
-from mind_factory_v2 import MindFactoryV2, MindConfig
+# Add project root to Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+from evolution.extended_genome import ExtendedGenome
+from evolution.mind_factory_v2 import MindFactoryV2, MindConfig
 
 def find_best_genome():
     """Find the best genome from all checkpoints"""

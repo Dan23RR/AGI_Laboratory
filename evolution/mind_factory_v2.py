@@ -18,25 +18,40 @@ import torch.nn as nn
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 
+import intel_extension_for_pytorch as ipex
+
 from core.base_module import ModuleConfig, AGIModuleFactory, BaseAGIModule
-from core.conscious_integration_hub_v2 import ConsciousIntegrationHubV2
+from modules.conscious_integration_hub_v2 import ConsciousIntegrationHubV2
 from core.memory_manager import CentralMemoryManager
 
 # Import refactored V3 modules
-from core.feedback_loop_system_v3 import FeedbackLoopSystemV3
-from core.sentient_agi_v3 import SentientAGIV3
-from core.dynamic_conceptual_field_v3 import DynamicConceptualFieldV3
-from core.recursive_self_model_v3 import RecursiveSelfModelV3
-from core.counterfactual_reasoner_v3 import CounterfactualReasonerV3
-from core.conceptual_compressor_v3 import ConceptualCompressorV3
-from core.attractor_networks_v3 import HierarchicalAttractorNetworkV3
-from core.emergence_enhancer_v3 import EmergenceEnhancerV3
-from core.global_integration_field_v3 import GlobalIntegrationFieldV3
-from core.internal_goal_generation_v3 import InternalGoalGenerationV3
-from core.coherence_stabilizer_v3 import CoherenceStabilizerV3
-from core.empowerment_calculator_v3 import EmpowermentCalculatorV3, EmpowermentConfigV3
-from core.energy_based_world_model_v2 import EnergyBasedWorldModelV2
-from world_model import PredictiveWorldModel
+from modules.feedback_loop_system_v3 import FeedbackLoopSystemV3
+from modules.sentient_agi_v3 import SentientAGIV3
+from modules.dynamic_conceptual_field_v3 import DynamicConceptualFieldV3
+from modules.recursive_self_model_v3 import RecursiveSelfModelV3
+from modules.counterfactual_reasoner_v3 import CounterfactualReasonerV3
+from modules.conceptual_compressor_v3 import ConceptualCompressorV3
+from modules.attractor_networks_v3 import HierarchicalAttractorNetworkV3
+from modules.emergence_enhancer_v3 import EmergenceEnhancerV3
+from modules.global_integration_field_v3 import GlobalIntegrationFieldV3
+from modules.internal_goal_generation_v3 import InternalGoalGenerationV3
+from modules.coherence_stabilizer_v3 import CoherenceStabilizerV3
+from modules.empowerment_calculator_v3 import EmpowermentCalculatorV3, EmpowermentConfigV3
+from modules.energy_based_world_model_v2 import EnergyBasedWorldModelV2
+from modules.emergent_consciousness_v4 import EmergentConsciousnessV4
+
+# Setup import path for world_model
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+try:
+    from world_model import PredictiveWorldModel
+except ImportError:
+    PredictiveWorldModel = None  # Optional module
 
 
 @dataclass
@@ -61,19 +76,20 @@ class MindFactoryV2:
     
     # Module registry - maps gene names to module classes
     MODULE_REGISTRY = {
-        "FeedbackLoopSystem": FeedbackLoopSystemV3,
-        "SentientAGI": SentientAGIV3,
-        "DynamicConceptualField": DynamicConceptualFieldV3,
-        "RecursiveSelfModel": RecursiveSelfModelV3,
-        "CounterfactualReasoner": CounterfactualReasonerV3,
-        "ConceptualCompressor": ConceptualCompressorV3,
-        "AttractorNetwork": HierarchicalAttractorNetworkV3,
-        "EmergenceEnhancer": EmergenceEnhancerV3,
-        "GlobalIntegrationField": GlobalIntegrationFieldV3,
-        "InternalGoalGeneration": InternalGoalGenerationV3,
-        "CoherenceStabilizer": CoherenceStabilizerV3,
-        "EmpowermentCalculator": EmpowermentCalculatorV3,
-        "EnergyBasedWorldModel": EnergyBasedWorldModelV2,
+        "FeedbackLoopSystemV3": FeedbackLoopSystemV3,
+        "SentientAGIV3": SentientAGIV3,
+        "DynamicConceptualFieldV3": DynamicConceptualFieldV3,
+        "RecursiveSelfModelV3": RecursiveSelfModelV3,
+        "CounterfactualReasonerV3": CounterfactualReasonerV3,
+        "ConceptualCompressorV3": ConceptualCompressorV3,
+        "HierarchicalAttractorNetworkV3": HierarchicalAttractorNetworkV3,
+        "EmergenceEnhancerV3": EmergenceEnhancerV3,
+        "GlobalIntegrationFieldV3": GlobalIntegrationFieldV3,
+        "InternalGoalGeneratorV3": InternalGoalGenerationV3,
+        "CoherenceStabilizerV3": CoherenceStabilizerV3,
+        "EmpowermentCalculatorV3": EmpowermentCalculatorV3,
+        "EnergyBasedWorldModelV2": EnergyBasedWorldModelV2,
+        "EmergentConsciousnessV4": EmergentConsciousnessV4
     }
     
     def __init__(self, device: Optional[torch.device] = None):
@@ -109,6 +125,14 @@ class MindFactoryV2:
         
         hub = ConsciousIntegrationHubV2(hub_module_config)
         hub = hub.to(self.device)
+
+        # Create a dummy optimizer for IPEX optimization. In a real scenario,
+        # you would integrate this with your actual optimizer creation logic.
+        optimizer = torch.optim.Adam(hub.parameters(), lr=0.001)
+
+        print("Applying Intel Extension for PyTorch (IPEX) CPU optimization...")
+        hub, optimizer = ipex.optimize(hub, optimizer=optimizer)
+        print("Optimization applied.")
         
         # Create and register modules based on genome
         active_genes = genome.get('genes', {})
@@ -169,7 +193,7 @@ class MindFactoryV2:
             return None
         
         # Special case: EmpowermentCalculator needs world model
-        if gene_name == "EmpowermentCalculator":
+        if gene_name == "EmpowermentCalculatorV3":
             emp_config = EmpowermentConfigV3(
                 state_dim=64,
                 action_dim=4,
@@ -177,16 +201,15 @@ class MindFactoryV2:
                 n_action_samples=16,
                 optimization_steps=3
             )
-            # Use PredictiveWorldModel with proper parameters
-            world_model = PredictiveWorldModel(
-                latent_dim=64,
-                action_input_embedding_dim=4,
-                hidden_dim=256,
-                num_hidden_layers=3,
-                device=str(self.device),
-                predict_done_flag=True,
-                predict_state_uncertainty=True
-            ).to(self.device)
+            # Create a world model instance dynamically
+            wm_config = ModuleConfig(
+                name="EnergyBasedWorldModelV2",
+                input_dim=config.hidden_dim,
+                output_dim=config.hidden_dim,
+                hidden_dim=config.hidden_dim,
+                memory_fraction=0.05
+            )
+            world_model = EnergyBasedWorldModelV2(wm_config).to(self.device)
             return module_class(config, emp_config, world_model)
         
         # Standard module creation
